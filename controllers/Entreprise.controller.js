@@ -84,7 +84,7 @@ exports.list=async(req,res)=>{
 	    		"title": 1,
 	    		"short_description":1,
 	    		"description":1,
-				"image":1,
+				//"image":1,
 	    		"category_details.name":1,
 				"category_details.slug":1,
 				"category_details._id":1,
@@ -180,7 +180,7 @@ exports.details=async(req,res)=>{
 	    		"title": 1,
 	    		"short_description":1,
 	    		"description":1,
-				"image":1,
+				//"image":1,
 	    		"category_details.name":1,
 				"category_details.slug":1,
 				"category_details._id":1,
@@ -237,15 +237,15 @@ exports.details=async(req,res)=>{
 }
 exports.create=async (req,res)=>{
 
-	if(req.files && req.files.image){
+	/*if(req.files && req.files.image){
 		req.body['image']=req.files.image;
-	}
+	}*/
 	const v = new Validator(req.body, {
 		title:'required|minLength:5|maxLength:100',
 		short_description:'required',
 		description:'required',
 		category: 'required',
-		image:'required|mime:jpg.jpeg,png'
+		//image:'required|mime:jpg.jpeg,png'
 	});
 	const matched = await v.check();
 	if (!matched) {
@@ -254,20 +254,20 @@ exports.create=async (req,res)=>{
 
 	try{
 
-	    if(req.files && req.files.image){
+	   /* if(req.files && req.files.image){
             var image_file= req.files.image;
             var image_file_name=Date.now()+'-blog-image-'+image_file.name;
             var image_path=publicPath+'/uploads/blog_images/'+image_file_name;
             await image_file.mv(image_path);
 		}
-
+*/
 	  	const newEntreprise = new Entreprise({
 	  	 title:req.body.title,
 		 short_description:req.body.short_description,
 	  	 description:req.body.description,
 	  	 category:req.body.category,
 	  	 created_by:req.user._id,
-	  	 image:image_file_name
+	  	// image:image_file_name
 	  	});
 	  	let entrepriseData=await newEntreprise.save();
 	  	
@@ -304,7 +304,7 @@ exports.create=async (req,res)=>{
 	    		"title": 1,
 	    		"short_description":1,
 	    		"description":1,
-				"image":1,
+				//"image":1,
 	    		"category_details.name":1,
 				"category_details.slug":1,
 				"category_details._id":1,
@@ -369,17 +369,17 @@ exports.update=async(req,res)=>{
 						description:'required',
 						category: 'required'
 					};
-					if(req.files && req.files.image){
+					/*if(req.files && req.files.image){
 						req.body['image']=req.files.image;
 						rules['image']='required|mime:jpg.jpeg,png'
-					}
+					}*/
 					const v = new Validator(req.body, rules);
 					const matched = await v.check();
 					if (!matched) {
 						return res.status(422).send(v.errors);
 					}
 
-				    if(req.files && req.files.image){
+				    /*if(req.files && req.files.image){
 			            var image_file= req.files.image;
 			            var image_file_name=Date.now()+'-entreprise-image-'+image_file.name;
 			            var image_path=publicPath+'/uploads/entreprise_images/'+image_file_name;
@@ -393,14 +393,14 @@ exports.update=async(req,res)=>{
 					}else{
 						var image_file_name=entreprise.image;
 					}
-
+                          */
 
 					await Entreprise.updateOne({_id:entreprise_id},{
 				  	 title:req.body.title,
 					 short_description:req.body.short_description,
 				  	 description:req.body.description,
 				  	 category:req.body.category,
-				  	 image:image_file_name
+				  	// image:image_file_name
 					});
 
 
@@ -505,11 +505,11 @@ exports.delete=async (req,res)=>{
 			  	});
 			}else{
 
-				let old_path=publicPath+'/uploads/entreprise_images/'+entreprise.image;
+				/*let old_path=publicPath+'/uploads/entreprise_images/'+entreprise.image;
 				if(fs.existsSync(old_path)){
 					fs.unlinkSync(old_path);
 				}
-
+*/
 				await Entreprise.deleteOne({_id:entreprise_id});
 				return res.status(200).send({
 			  		message:'entreprise successfully deleted',
